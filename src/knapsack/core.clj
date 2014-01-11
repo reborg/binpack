@@ -4,20 +4,11 @@
   "Grow coll up to n items using nil fillers"
   (concat coll (take (- n (count coll)) (repeat nil))))
 
-(defn resize-all [& colls]
-  "Transform the list of collection colls so that
-  all collections are of the same size using a nil-filler."
-  (map #(resize % (apply max (map count colls))) colls))
-
-(defn interleave-all [& colls]
-  "Like interleave but include leftovers"
-  (apply interleave (apply resize-all colls)))
-
-(defn pack [sacks items]
-  "Packs items into sacks minimizing wasted space"
-  (let [assign (partial partition-all (count sacks))]
-    (->> (sort #(compare %2 %1) items) 
-         assign 
-         (apply interleave-all) 
-         assign 
-         (map (partial remove nil?)))))
+(defn unconstrained-packing [n items]
+  "Packs items into n containers, bigger items first, without
+  limits to the size of packed items in each container."
+  (loop [xs (reverse (sort items)) containers (repeat n (list))]
+    (if (= 0 (count xs))
+      (->> containers (map (partial remove nil?)))
+      (let [[allocable others] (split-at (count containers) xs)]
+        (recur others (map #(conj %2 %1) (resize allocable (count containers)) containers))))))
