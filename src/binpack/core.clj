@@ -1,4 +1,5 @@
-(ns binpack.core)
+(ns binpack.core
+  (:require [binpack.fit :as fit]))
 
 (defn resize [items n]
   "Grow items up to n items using nil fillers"
@@ -42,13 +43,35 @@
           (recur others (add-first item cs sizes))))
       free-allocation)))
 
-(defn pack [items sizes f]
+(defn pack 
   "Pack items into (count sizes) containers giving priority to the first items first.
   Require an allocation strategy function f taking one item, 
   the current containers status and their sizes that is used to allocate 
-  a new item into containers."
-  (loop [xs items cs (repeat (count sizes) (list))]
-    (if (= 0 (count xs))
-      cs
-      (let [[x1 x2] (split-at (count cs) xs)]
-        (recur x2 (f x1 cs sizes))))))
+  a new item into containers. Use size strategy by default."
+  ([items sizes]
+   (pack items sizes size-alloc))
+  ([items sizes f]
+   (loop [xs items cs (repeat (count sizes) (list))]
+     (if (= 0 (count xs))
+       cs
+       (let [[x1 x2] (split-at (count cs) xs)]
+         (recur x2 (f x1 cs sizes)))))))
+
+(defn pack-attempts 
+  ([items sizes]
+   "Return multiple packing attempts of different combinations of items in the same
+   containers. n Defaults to 10 attempts."
+   (map #(pack % sizes) (fit/populations items)))
+  ([items sizes n]
+   (map #(pack % sizes) (fit/populations items (- n 2)))))
+
+(defn best-fit 
+  "Return the best allocation of items in containers that minimize wasted space.
+  Runs n iterations before returning the best result (n defaults to 10).
+  Filters out allocations with missing items."
+  ([items sizes]
+   (best-fit items sizes 10))
+  ([items sizes n]
+   (let [fully-packed (filter #(= (count items) (reduce + (map count %))) (pack-attempts items sizes n))
+         fit-table (map #(-> [(fit/waste % sizes) %]) fully-packed)]
+     (last (first (sort-by first fit-table))))))

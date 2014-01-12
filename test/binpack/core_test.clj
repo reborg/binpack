@@ -36,13 +36,17 @@
 
 (facts "pack items without exceeding container sizes"
        (fact "no space whatsoever"
-             (k/pack [2 2 1 1] [0 0] k/size-alloc) => [[] []])
+             (k/pack [2 2 1 1] [0 0]) => [[] []])
        (fact "single container"
-             (k/pack (range 1 10) [10] k/size-alloc) => [[4 3 2 1]])
+             (k/pack (range 1 10) [10]) => [[4 3 2 1]])
        (fact "asymmetric packing"
-             (k/pack [10 20 30 40 50 60 70] [100 20 80] k/size-alloc) => [[50 40 10] [20] [30]])
+             (k/pack [10 20 30 40 50 60 70] [100 20 80]) => [[50 40 10] [20] [30]]))
+
+(facts "best fit"
+       (fact "impossible fit"
+             (k/best-fit [100 200 300] [50 50]) => nil)
+       (fact "impossible fit, only two solutions with just a couple of items"
+             (k/best-fit (range 1000) [50 50]) => nil)
        (fact "sessions and time slots"
-             (k/pack 
-               (reverse (sort [60 45 30 45 45 5 60 45 30 30 45 60 60 45 30 30 60 30 30])) 
-               [180 180 240 240] k/size-alloc) => 
+             (k/best-fit [60 45 30 45 45 5 60 45 30 30 45 60 60 45 30 30 60 30 30] [180 180 240 240]) => 
              [[5 45 60 60] [30 45 45 60] [30 30 30 45 45 60] [30 30 30 45 60]]))
