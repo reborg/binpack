@@ -1,6 +1,6 @@
-(ns knapsack.core-test
+(ns binpack.core-test
   (:use [midje.sweet])
-  (:require [knapsack.core :as k]))
+  (:require [binpack.core :as k]))
 
 (fact "verification on size of containers"
       (k/exceeded? [[3 2 3] [3 7]] [10 10]) => falsey
@@ -41,7 +41,7 @@
              (k/pack (range 1 10) [10] k/size-alloc) => [[4 3 2 1]])
        (fact "asymmetric packing"
              (k/pack [10 20 30 40 50 60 70] [100 20 80] k/size-alloc) => [[50 40 10] [20] [30]])
-       (fact "some conferencing"
+       (fact "sessions and time slots"
              (k/pack 
                (reverse (sort [60 45 30 45 45 5 60 45 30 30 45 60 60 45 30 30 60 30 30])) 
                [180 180 240 240] k/size-alloc) => 

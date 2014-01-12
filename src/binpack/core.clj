@@ -1,4 +1,4 @@
-(ns knapsack.core)
+(ns binpack.core)
 
 (defn resize [items n]
   "Grow items up to n items using nil fillers"
