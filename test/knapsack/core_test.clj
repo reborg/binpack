@@ -41,5 +41,8 @@
              (k/pack (range 1 10) [10] k/size-alloc) => [[4 3 2 1]])
        (fact "asymmetric packing"
              (k/pack [10 20 30 40 50 60 70] [100 20 80] k/size-alloc) => [[50 40 10] [20] [30]])
-       (fact "big items take precedence when reversed"
-             (k/pack (reverse (range 1 100)) (take 5 (repeat 50)) k/size-alloc) => [[50] [1 49] [2 48] [3 47] [4 46]]))
+       (fact "some conferencing"
+             (k/pack 
+               (reverse (sort [60 45 30 45 45 5 60 45 30 30 45 60 60 45 30 30 60 30 30])) 
+               [180 180 240 240] k/size-alloc) => 
+             [[5 45 60 60] [30 45 45 60] [30 30 30 45 45 60] [30 30 30 45 60]]))
