@@ -46,7 +46,4 @@
        (fact "impossible fit"
              (k/best-fit [100 200 300] [50 50]) => nil)
        (fact "impossible fit, only two solutions with just a couple of items"
-             (k/best-fit (range 1000) [50 50]) => nil)
-       (fact "sessions and time slots"
-             (k/best-fit [60 45 30 45 45 5 60 45 30 30 45 60 60 45 30 30 60 30 30] [180 180 240 240]) => 
-             [[5 45 60 60] [30 45 45 60] [30 30 30 45 45 60] [30 30 30 45 60]]))
+             (k/best-fit (range 1000) [50 50]) => nil))

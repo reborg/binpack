@@ -1,5 +1,5 @@
 (defproject binpack "0.1.0"
-  :description "Bin-packing problem solution written in Clojure"
+  :description "A Clojure library to solve the bin packing problem."
   :url "https://github.com/reborg/binpack"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
