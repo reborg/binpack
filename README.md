@@ -7,6 +7,12 @@ binpack is a small Clojure library to solve the [bin packing problem](http://en.
     user=> (pack/best-fit (range 1 10) [15 15 20])
     [(6 9) (2 5 8) (1 3 4 7)]
 
+## Install
+
+Put this dependency in your project.clj
+
+    :dependencies [[binpack "0.1.0"]]
+
 ## Approach
 
 * Multiple combinations of the initial set of items are ordered ascending, descending (First Fit Decreasing FFD) and a few random additional combinations
