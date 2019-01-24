@@ -9,10 +9,12 @@
              (second (f/populations (shuffle (range 10)))) => (range 10)
              (last (f/populations (shuffle (range 10)))) =not=> (range 10)
              (last (f/populations (shuffle (range 10)))) =not=> (reverse (range 10)))
+       (fact "gives all six permutations of a three element set"
+             (count (into #{} (f/populations '(1 2 3) 27))) => 6)
        (fact "can specify the amount of random ones I want"
-             (count (f/populations (shuffle (range 10)) 0)) => 2)
+             (count (f/populations (shuffle (range 10)) 0)) => 2
              (first (f/populations (shuffle (range 10)) 0)) => (reverse (range 10))
-             (second (f/populations (shuffle (range 10)) 0)) => (range 10))
+             (second (f/populations (shuffle (range 10)) 0)) => (range 10)))
 
 (facts "measure waste"
        (fact "perfect fit is zero waste"

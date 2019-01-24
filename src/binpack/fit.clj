@@ -1,12 +1,12 @@
 (ns binpack.fit)
 
 (defn populations 
-  "Generates a total of n+2 cobminations of elements in items,
+  "Generates a total of n+2 combinations of elements in items,
   ordered ascending, descending and n randomizations."
   ([items]
    (populations items 8))
   ([items n]
-   (let [randomized (take n (repeat (shuffle items)))]
+   (let [randomized (take n (iterate shuffle items))]
      (merge randomized (sort items) (reverse (sort items))))))
 
 (defn waste [containers sizes]
